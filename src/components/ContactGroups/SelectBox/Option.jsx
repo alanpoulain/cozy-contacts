@@ -6,7 +6,7 @@ import { ActionsOption } from 'cozy-ui/transpiled/react/SelectBox'
 import EditGroupName from './EditGroupName'
 
 const Option = props => {
-  const { name: groupName, id: groupId } = props.data
+  const { name: groupName, id: groupId, withNoAction } = props.data
   const {
     editedGroupId,
     setEditedGroupId,
@@ -25,6 +25,7 @@ const Option = props => {
   ) : (
     <ActionsOption
       {...props}
+      withNoAction={withNoAction}
       withCheckbox={isMulti ? true : false}
       actions={[
         {
@@ -51,7 +52,8 @@ Option.propTypes = {
   }),
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired
+    id: PropTypes.string,
+    withNoAction: PropTypes.bool
   })
 }
 
