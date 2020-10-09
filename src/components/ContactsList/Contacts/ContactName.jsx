@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
+import HighlightedContactContext from '../../Contexts/HighlightedContact'
+import useQueryHighlightText from '../Hooks/useQueryHighlightText'
+
 const ContactName = ({ displayName, familyName }) => {
+  const { highlightedContact } = useContext(HighlightedContactContext)
+
   const namesToDisplay = (displayName && displayName.split(' ')) || []
+
+  const highlightedFamilyName = useQueryHighlightText(
+    familyName,
+    highlightedContact
+  )
+
   return (
     <div className="u-ellipsis u-ml-1">
       {namesToDisplay.map((name, key) => (
@@ -11,7 +22,7 @@ const ContactName = ({ displayName, familyName }) => {
           key={`display-${key}`}
           className={cx({ 'u-fw-bold': name === familyName })}
         >
-          {name}
+          {name === familyName ? highlightedFamilyName : name}
           &nbsp;
         </span>
       ))}
