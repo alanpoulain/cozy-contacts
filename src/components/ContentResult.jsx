@@ -5,6 +5,7 @@ import { Content } from 'cozy-ui/transpiled/react/Layout'
 import { useI18n } from 'cozy-ui/transpiled/react/I18n'
 import useBreakpoints from 'cozy-ui/transpiled/react/hooks/useBreakpoints'
 
+import { HighlightedContactProvider } from './Contexts/HighlightedContact'
 import SelectedGroupContext from './Contexts/SelectedGroup'
 import Header from './Header'
 import Toolbar from './Toolbar'
@@ -52,7 +53,9 @@ export const ContentResult = ({ contacts, allGroups }) => {
         />
       )}
       <Content>
-        <ContactsList contacts={filteredContactsByGroup} />
+        <HighlightedContactProvider>
+          <ContactsList contacts={filteredContactsByGroup} />
+        </HighlightedContactProvider>
       </Content>
     </>
   )

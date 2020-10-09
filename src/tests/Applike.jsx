@@ -9,6 +9,7 @@ import langEn from '../locales/en.json'
 import configureStore from '../store/configureStore'
 import getCozyClient from './client'
 import { SelectedGroupProvider } from '../components/Contexts/SelectedGroup'
+import { HighlightedContactProvider } from '../components/Contexts/HighlightedContact'
 
 const store = configureStore(getCozyClient(), null, {})
 
@@ -17,7 +18,9 @@ const AppLike = ({ children, client }) => (
     <Provider store={store}>
       <CozyProvider client={client || getCozyClient()}>
         <I18n lang={'en'} dictRequire={() => langEn}>
-          <SelectedGroupProvider>{children}</SelectedGroupProvider>
+          <SelectedGroupProvider>
+            <HighlightedContactProvider>{children}</HighlightedContactProvider>
+          </SelectedGroupProvider>
         </I18n>
       </CozyProvider>
     </Provider>
