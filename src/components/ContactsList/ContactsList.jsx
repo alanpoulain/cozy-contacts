@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import flag from 'cozy-flags'
@@ -10,55 +10,60 @@ import ContactsEmptyList from './ContactsEmptyList'
 import ContactRow from './ContactRow'
 import ContactHeaderRow from './ContactHeaderRow'
 
+import useContactHighlight from './Hooks/useContactHighlight'
 import withSelection from '../Selection/selectionContainer'
 
-class ContactsList extends Component {
-  render() {
-    const { clearSelection, contacts, selection, selectAll, t } = this.props
+const ContactsList = ({
+  clearSelection,
+  contacts,
+  selection,
+  selectAll,
+  t
+}) => {
+  useContactHighlight()
 
-    if (contacts.length === 0) {
-      return <ContactsEmptyList />
-    } else {
-      const isAllContactsSelected = contacts.length === selection.length
-      const categorizedContacts = categorizeContacts(contacts, t('empty-list'))
+  if (contacts.length === 0) {
+    return <ContactsEmptyList />
+  } else {
+    const isAllContactsSelected = contacts.length === selection.length
+    const categorizedContacts = categorizeContacts(contacts, t('empty-list'))
 
-      return (
-        <div className="list-wrapper">
-          {flag('select-all-contacts') && (
-            <div>
-              <Button
-                label={
-                  isAllContactsSelected ? t('unselect-all') : t('select-all')
-                }
-                theme="secondary"
-                onClick={() =>
-                  isAllContactsSelected ? clearSelection() : selectAll(contacts)
-                }
-              />
-            </div>
-          )}
-          <ol className="list-contact">
-            {Object.entries(categorizedContacts).map(([header, contacts]) => (
-              <li key={`cat-${header}`}>
-                <ContactHeaderRow key={header} header={header} />
-                <ol className="sublist-contact">
-                  {contacts.map(contact => (
-                    <li key={`contact-${contact._id}`}>
-                      <ContactRow
-                        id={contact._id}
-                        key={contact._id}
-                        contact={contact}
-                      />
-                    </li>
-                  ))}
-                </ol>
-              </li>
-            ))}
-          </ol>
-          <div />
-        </div>
-      )
-    }
+    return (
+      <div className="list-wrapper">
+        {flag('select-all-contacts') && (
+          <div>
+            <Button
+              label={
+                isAllContactsSelected ? t('unselect-all') : t('select-all')
+              }
+              theme="secondary"
+              onClick={() =>
+                isAllContactsSelected ? clearSelection() : selectAll(contacts)
+              }
+            />
+          </div>
+        )}
+        <ol className="list-contact">
+          {Object.entries(categorizedContacts).map(([header, contacts]) => (
+            <li key={`cat-${header}`}>
+              <ContactHeaderRow key={header} header={header} />
+              <ol className="sublist-contact">
+                {contacts.map(contact => (
+                  <li key={`contact-${contact._id}`}>
+                    <ContactRow
+                      id={contact._id}
+                      key={contact._id}
+                      contact={contact}
+                    />
+                  </li>
+                ))}
+              </ol>
+            </li>
+          ))}
+        </ol>
+        <div />
+      </div>
+    )
   }
 }
 ContactsList.propTypes = {
